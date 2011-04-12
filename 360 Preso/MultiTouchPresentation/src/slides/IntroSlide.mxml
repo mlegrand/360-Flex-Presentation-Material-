@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		   xmlns:s="library://ns.adobe.com/flex/spark" 
+		   xmlns:mx="library://ns.adobe.com/flex/mx"
+		   creationComplete="canvas1_creationCompleteHandler(event)"
+		   resize="canvas1_resizeHandler(event)"
+		   horizontalScrollPolicy="off" verticalScrollPolicy="off"
+		   >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+
+			[Embed(source="/assets/images/sml1080.png")]
+			protected var ten80p:Class;
+			
+			[Embed(source="/assets/images/sml1024.png")]
+			protected var seven68:Class;
+			
+			protected function canvas1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if(this.width > 1024)
+				{
+					backgroundImage.source = ten80p;
+				}
+				else
+				{
+					backgroundImage.source = seven68;
+				}
+			}
+
+
+			protected function canvas1_resizeHandler(event:ResizeEvent):void
+			{
+				if(this.width > 1024)
+				{
+					backgroundImage.source = ten80p;
+				}
+				else
+				{
+					backgroundImage.source = seven68;
+				}
+				backgroundImage.setStyle('horizontalCenter', 0);
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<mx:Image id="backgroundImage"  height="100%" scaleContent="true" horizontalCenter="0" />
+	<mx:VBox bottom="0" right="0" paddingBottom="20" paddingRight="50" horizontalAlign="right">
+		<!--<mx:Label id="presoTitle" styleName="basicTextStyle" fontSize="50" text="Multitouch on the flash platform"/>-->
+		<mx:Label id="yourName" styleName="basicTextStyle" text="Matt LeGrand" />
+	</mx:VBox>
+</mx:Canvas>

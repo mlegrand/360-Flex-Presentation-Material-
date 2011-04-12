@@ -1,0 +1,666 @@
+<slides>
+     
+<!--     NOTES
+     FIND MORE HARD NUMBERS
+-->
+      <!--    Multitouch TOOLS  -->
+<!--     About ME-->
+     
+     <slide>
+        <title>who are you and why are you in my kitchen?</title>
+        
+        <header1>Matt LeGrand</header1>
+        <header2>NerdWarfare Inc.</header2>
+        <header3>Multitouchup.com</header3>
+        
+        <text1>Rich Internet Application developer primarily working in Flex since 2005 and flash since 1999.  In a former life I was a bit of a jogger.  Mostly left foot then right foot, but sometimes right foot then left foot.
+		</text1>
+        <text2>NerdWarfare builds Rich Internet Applications (RIAs) and provides web development and consulting services based on the latest Adobe tool sets.
+		</text2>
+        <text3>Video tutorials and blog about multitouch on the flash platform.  Links to helpful tools for multitouch development and an overall great place to peruse while enjoying your morning coffee.
+		</text3>
+		
+		<contentImage1>/assets/images/logo_flare.png</contentImage1>
+		<contentImage2>/assets/images/NerdWarfare.png</contentImage2>
+		<contentImage3>/assets/images/mtLogo.png</contentImage3>
+		
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    <slide>
+        <title>simtouch project</title>
+        
+        <header1>Simulate Touch Events</header1>
+        <header2>Sim Connect</header2>
+        <header3>Open Source</header3>
+        
+        <text1>Uses an Air application to simulate unlimited touch points over a socket server (UDP).  
+		</text1>
+        
+        <text2> Required swc and class reference.  
+		</text2>
+        
+        <text3>The project is open source and is located at http://code.google.com/p/simTouch
+		</text3>
+		
+		<contentImage1>/assets/images/simTouchLogo.png</contentImage1>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+     
+     
+    
+<!--    Talk OUTLINE-->
+    
+     <slide>
+        <title>what's in this talk for me?</title>
+        
+        <header1>Multitouch for Flash 101</header1>
+        <header2>Coding Tips and Tricks</header2>
+        <header3>Tools, Hardware and Resources</header3>
+        
+        <text1>A bit about the past and a quick introduction to new multitouch events and when to use them.  </text1>
+        <text2>We'll look at a few code snippets showing common problems unique to multitouch and how to quickly overcome them.  </text2>
+        <text3>We'll quickly look at a few tools for developing and testing multitouch applications.  </text3>
+		
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    <!--    Multitouch HISTORY-->
+    
+     
+    <slide>
+        <title>Google Trends for 'Multitouch'</title>
+        
+        <image>/assets/images/mtTrends.png</image>
+		
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    <slide>
+        <title>i thought Steve Jobs invented multitouch</title>
+        
+        <image>/assets/images/historyTimeLine.png</image>
+		
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+     <slide>
+        <title>these guys never worked at Apple</title>
+        
+        <header1>Nimish Mehta</header1>
+        <header2>Myron Krueger</header2>
+        <header3>Bill Buxton</header3>
+        
+        <alignImage>right</alignImage>
+        
+		<contentImage1>/assets/images/Mehta Device.jpg</contentImage1>
+        
+        <text1>1982 Flexible Machine Interface seems 
+to be the first true multitouch device.  </text1>
+        
+        <text2>1983 Video Place / Video Desk  - vision based system that tracked the hands and enabled multiple fingers, hands, and people to interact using a rich set of gestures.</text2>
+        
+        <text3>University of Toronto,  Microsoft Research </text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+     <slide>
+        <title>recent spike</title>
+        
+        <header1>Jeff Han 2006</header1>
+        <header2>Apple iPhone</header2>
+        <header3>Microsoft Surface 2007</header3>
+        
+        
+        <text1>Gave a Ted Talk in 2006 using a FTIR multitouch table.  http://www.perceptivepixel.com/</text1>
+        
+        <text2> released in May of 2007
+		</text2>
+        
+        <text3>released in November of 2007</text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <slide>
+        <title>Jeff Han's Ted Talk</title>
+        
+        <startTime>200</startTime>
+        
+        <video>/assets/videos/jeffHan.flv</video>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+     <!--  USE STUDY GRAPHICS  SHOULD WE USE MULTITOUCH AT ALL?   MOVE?  -->
+    
+     <slide>
+        <title>evaluate single touch vs multitouch</title>
+        
+        <header1>Touting benefits of multitouch</header1>
+        <header2>Sorting with the mouse</header2>
+        <header3>Twice as fast</header3>
+        
+        <text1>UC Berkeley discovered that a multitouch workstation was about twice as fast as the traditional mouse-based workstation at performing multi-selection tasks.</text1>
+        
+        <text2>The most significant increase in performance was seen when going from the mouse-based work-station to the single finger work station.  That alone accounted for 83% of the performance improvement.</text2>
+        
+        <text3>Details: http://multitouchup.com/study-shows-multitouch-is-about-twice-as-fast-as-mouse/ </text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+       <slide>
+    
+        <title>UC Berkeley study results</title>
+        
+       <image>/assets/images/research_paper_results.png</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>  
+    
+    
+    
+    
+   <slide>
+        <title>flash player 10.1 and Air 2</title>
+        
+        <header1>New Multitouch class</header1>
+        <header2>Minor changes to the Capabilities class</header2>
+        <header3>Two new major events</header3>
+        
+        <text1>flash.ui.Multitouch</text1>
+        <text2>flash.system.Capabilities</text2>
+        <text3>TransformGestureEvents and TouchEvents</text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+<!--    Not exactly cross platform    -->
+    
+    <slide>
+        <title>cross platform you say?</title>
+        
+        <header1>Apple's uni-body</header1>
+        <header2>Windows 7 hardware</header2>
+        <header3>iPhone, Android, BlackBerry Playbook</header3>
+        
+        <text1>Apple's uni-body Mac book track pad only supports gesture events.  The developer does not have access to touch point x/y positions.   
+		</text1>
+        
+        <text2>With Windows 7 and capable hardware you can listen for raw touch events or gestures.
+			 </text2>
+        
+        <text3>Like windows 7, mobile devices have access to raw touch points or gestures.</text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+        <slide>
+        <title>we'll need to double check that</title>
+        
+        <header1>flash.ui.Multitouch</header1>
+        <header2>example usages</header2>
+        <header3></header3>
+        
+        <text1>The Multitouch class is a new public final class.  It helps manage the current environments multitouch support.  
+		</text1>
+        
+        <text2>Multitouch.supportsGestureEvent (Boolean)
+Multitouch.supportsTouchEvent  (Boolean)
+Multitouch.maxTouchPoints (bug in Android)
+Multitouch.supportedGestures  (Vector of Strings)
+Capabilities.touchscreenType (TouchscreenType.FINGER, STYLUS, NONE)
+		</text2>
+		
+		<text3>Capabilities.touchscreenType (TouchscreenType.FINGER, STYLUS, NONE)
+		</text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+<!--    CODE SNIPPIT ON CHECKING CAPABILITIES -->
+    
+    <slide>
+        <title>check it out</title>
+        <image>/assets/images/usersCapabilities.jpg</image>
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <slide>
+        <title>multitouch input mode</title>
+        
+        <header1>Multitouch.inputMode</header1>
+        <header2></header2>
+        <header3>example</header3>
+        
+        <text1>Default is set to GESTURE.  
+Required for raw touch events. 
+Toggle at runtime.       
+		</text1>
+		
+        <text3>Multitouch.inputMode = MultitouchInputMode.GESTURE;
+Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;    
+		</text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    
+<!--    mode Switch Code Block -->
+     
+     <slide>
+        <title>switch multitouch modes</title>
+        <image>/assets/images/switchTouchModes.jpg</image>
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+     </slide>
+    
+     
+    <!--    Multitouch FLASH EVENTS-->
+    
+    <slide>
+        <title>gesture events</title>
+        
+        <header1>flash.events.TransformGestureEvent</header1>
+        <header2></header2>
+        <header3>Important event attributes:</header3>
+        
+        <text1>Types:  
+	GESTURE_PAN
+	GESTURE_SWIPE
+	GESTURE_ROTATE
+	GESTURE_ZOOM
+	   
+		</text1>
+        
+        <text2>
+		</text2>
+		
+		<text3>offsetX and Y 
+scaleX and Y 
+rotation</text3>
+        
+        <bottomImage>assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+        <!--    Multitouch GESTURE IMAGES-->
+        
+    <slide>
+        <title>gesturePan</title>
+        
+        <image>/assets/images/pan_images.png</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <slide>
+        <title>gestureRotate</title>
+        
+        <image>/assets/images/rotate_images.png</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <slide>
+        <title>gestureSwipe</title>
+        
+        <image>/assets/images/swipe_images.png</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <slide>
+        <title>gestureZoom</title>
+        
+        <image>/assets/images/zoom_images.png</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+        
+        
+        <!--    Multitouch GESTURE EVENTS-->
+    
+    <slide>
+        <title>other gesture events</title>
+        
+        <header1>flash.events.PressAndTapGestureEvent</header1>
+        <header2>flash.events.GestureEvent</header2>
+        
+        <text1>GESTURE_PRESS_AND_TAP 
+ The event is dispatched when a user has a finger down on an object and taps it with another finger. 
+Important event attributes:  tapLocalX and Y, tapStageX and Y
+		</text1>
+		
+		<text2>This is the base class for the previous gesture classes. 
+GESTURE_TWO_FINGER_TAP 
+		</text2>
+		
+		<text3>GesturePhase which gives insight into the gestures progress. (begin, update, or end)</text3>
+        
+        <bottomImage>assets/images/potHands.png</bottomImage>
+    </slide>
+    
+     <!--    Multitouch GESTURE EVENT TRACE -->
+    
+    <slide>
+        <title>gesture event trace</title>
+        
+        <image>/assets/images/transformGestureEvent.png</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    <!--    Multitouch GESTURE  code snippit  -->
+    
+    
+     <slide>
+        <title>gesture example code</title>
+        
+        <image>/assets/images/gestureCodeSample.jpg</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+            <!--    Multitouch GESTURE SWF   -->
+            
+            
+    <slide>
+        <title>gesture example</title>
+        
+        <swf>gesture</swf>
+        
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    <!--    Multitouch GESTURE SWF with tolerance  -->
+    
+    <slide>
+        <title>gesture example code</title>
+        
+        <image>/assets/images/event_break.jpg</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    
+    
+<!--    TOUCH EVENT-->
+    
+    
+    <slide>
+        <title>raw touch event</title>
+        
+        <header1>flash.events.TouchEvent</header1>
+        <header3>Limitations</header3>
+        
+        <text1>This event is similar to the standard MouseEvent.
+Types include: 
+	TOUCH_BEGIN
+	TOUCH_END  
+	TOUCH_MOVE 
+	TOUCH_OUT 
+	TOUCH_TAP 
+	TOUCH_OVER
+	TOUCH_ROLL_OUT 
+	TOUCH_ROLL_OVER
+ 		</text1>
+        
+        
+        <text3>This class is currently only accessible by the Windows 7 operating system, iPhone and Android.  Not available on OSX. </text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <slide>
+    
+        <title>touch event trace</title>
+        
+        <image>/assets/images/touchEvent.png</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+<!--    IMAGE CODE BLOCK  -->
+    
+     <slide>
+    
+        <title>touch event code block</title>
+        
+        <image>/assets/images/touchSampleCode.jpg</image>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <!--  TOUCH  SWF EXAMPLE  -->
+    
+     <slide>
+    
+        <title>touch event example</title>
+        
+       <swf>touch</swf>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+     <!--  WHEN TO USE WHAT-->
+
+    
+     <slide>
+        <title>when to use what event</title>
+        
+        <header1>Click Events</header1>
+        <header2>Touch Events</header2>
+        <header3>Gesture Events</header3>
+        
+        <text1>If you don't change any of your code tap events get mapped over to click events and your application should just work.  Avoiding the multitouch apis is also more efficient for flash.</text1>
+        
+        <text2>Touch events give you raw x/y coordinates and allow you to have a fine grain to your animations.</text2>
+			 
+        <text3>Gesture events are easy to implement but vary by operating system and you lose a bit of control over how your application will respond.</text3>
+			
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+     <slide>
+        <title>use raw touch events if possible</title>
+        <image>/assets/images/transformGestureIssues_dark1.jpg</image>
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+   
+   
+   
+     <!--    Multitouch TIPS AND TRICKS-->
+    
+    <slide>
+        <title>small suggestions</title>
+        
+        <header1>roll your own gestures</header1>
+        <header2>use physics </header2>
+        <header3>avoid flex</header3>
+        
+        <text1>If possible, use the raw touch points even if you are reacting to a gesture.</text1>
+        
+        <text2>Users expect digital content to be thrown, bounced and slid.</text2>
+        
+        <text3>The spark.core.SpriteVisualElement seems to be responsive.  Avoid nested classes.  Consider stopping event propagation. Consider Reflex (http://reflex.io/) for more responsive applications.  </text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    <!--  Other BIG IDEAS TO KEEP IN MIND    -->
+    
+    <slide>
+        <title>other big ideas to keep in mind</title>
+        
+        <header1>Where is the user?</header1>
+        <header2>Size Matters</header2>
+        <header3>Native code or javascript</header3>
+        
+        <text1>In many multitouch surfaces the user might approach your application from a variety of angles.</text1>
+        
+        <text2> How many people are going to be interacting with your device at the same time?  32' seems large but if you have 2-4 people in front of the single screen you may need to rearrange your UI</text2>
+        
+        <text3>Android, Cocoa touch and javascript all have strong multitouch apis.  (there are some cross browser issues with javascript currently) </text3>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+     <!--    Additional Fun Examples NEEDED 
+     
+     
+     <slide>
+    
+        <title>molehill example   Additional Fun Examples NEEDED</title>
+        
+       <swf>/assets/images/touchEventCode.png</swf>
+        
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+     -->
+     
+     <!--    Multitouch HARDWARE-->
+     
+     
+     <slide>
+        <title>hardware list</title>
+        
+        <image>/assets/images/hardware.png</image>
+        
+       <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+     <slide>
+        <title>microsoft surface $7k</title>
+        
+        <startTime>50</startTime>
+        
+        <video>/assets/videos/micro.flv</video>
+		
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+     
+    <slide>
+        <title>three items of interest </title>
+        
+        <header1>HP Touch (N-Trig)</header1>
+        <header2>Microsoft Surface v2</header2>
+        <header3>3M 32 inch </header3>
+        
+        <text1>TouchSmart 600t, TouchSmart TX2, L2105tm monitor.
+Get them 'on the cheap' but they are dual touch input and slow response times. </text1>
+        
+        <text2> The new Surface made by Samsung is thin and has an estimated price tag of $7k. </text2>
+        
+        <text3>3M announced at CES that they'll be shipping a low latency 32" multitouch monitor capable of 40 plus touch inputs.  Estimated price tag of $2500</text3>
+        
+       <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    
+    <slide>
+        <title>3M releasing this summer est.$2500</title>
+        
+         <startTime>200</startTime>
+        
+        <video>/assets/videos/3m.flv</video>
+		
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+    
+    <slide>
+        <title>Capacitive touch screens</title>
+        
+        <header1>Surface capacitance</header1>
+        <header3>Projected capacitance</header3>
+        
+        <contentImage1>/assets/images/Capasative.png</contentImage1>
+        
+        <alignImage>right</alignImage>
+        
+        <text1>One side of the insulator is coated with a conductive layer. A small voltage is applied to the conductive layer, resulting in a uniform electrostatic field. When a conductor, such as a human finger, touches the uncoated surface, a capacitor is dynamically formed.  
+		</text1>
+        
+        <text3>PCT technology is a capacitive technology which permits more accurate and flexible operation, by etching the conductive layer. An X-Y grid is formed either by etching a single layer to form a grid pattern of electrodes
+        </text3>
+        
+        <bottomImage>assets/images/potHands.png</bottomImage>
+    </slide>
+    
+    
+<!--    NUI DIY SLIDES-->
+     
+    <slide>
+        <title>DIY and large MT displays</title>
+        
+        <header1>FTIR</header1>
+        <header2>LLP</header2>
+        <header3>DI</header3>
+        
+        
+        <alignImage>right</alignImage>
+        
+        <contentImage1>assets/images/FTIR.jpg</contentImage1>
+        <contentImage2>assets/images/LLP.jpg</contentImage2>
+        <contentImage3>assets/images/DI.jpg</contentImage3>
+        
+        
+        <text1>Frustrated total internal reflection    
+		</text1>
+        
+        <text2> Laser Light Plane
+		</text2>
+        
+        <text3>Diffused Illumination (DI) 
+		</text3>
+        
+        <bottomImage>assets/images/potHands.png</bottomImage>
+    </slide>
+     
+     
+    <slide>
+        <title>contact info</title>
+        
+        <header1>Matt LeGrand</header1>
+        <header2>NerdWarfare Inc.</header2>
+        <header3>Multitouchup.com</header3>
+        
+        <text1>mlegrand@gmail.com
+@matt_legrand  (twitter)
+http://github.com/mlegrand
+		</text1>
+        
+        <text2>
+				http://nerdwarfare.com
+				
+		</text2>
+		
+        <text3> http://multitouchup.com
+@multitouchup  (twitter)
+        </text3>
+        <bottomImage>/assets/images/potHands.png</bottomImage>
+    </slide>
+    
+</slides>

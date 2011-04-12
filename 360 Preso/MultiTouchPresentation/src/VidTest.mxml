@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   creationComplete="init()">
+	<fx:Script>
+		<![CDATA[
+			import flash.events.ActivityEvent;
+			import flash.media.Camera;
+			import flash.media.Video;
+			
+			private var video:Video;
+			
+			private function init():void {
+				var camera:Camera = Camera.getCamera();
+				
+				if (camera != null) {
+					camera.addEventListener(ActivityEvent.ACTIVITY, activityHandler);
+					video = new Video(camera.width * 2, camera.height * 2);
+					video.attachCamera(camera);
+					player.addChild(video);
+				}
+				
+			}
+			private function activityHandler(event:ActivityEvent):void {
+				trace("activityHandler: " + event);
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<mx:UIComponent id="player" height="100%" width="100%" />
+</s:WindowedApplication>

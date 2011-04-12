@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<slides:BaseSlide xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" 
+				  xmlns:slides="slides.*" 
+				  width="100%" height="100%"
+				  creationComplete="baseslide1_creationCompleteHandler(event)"
+				  >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			//------------------------------------------------------------------------------
+			//		Content images
+			//------------------------------------------------------------------------------
+			
+			[Bindable]
+			public var contentImage1:String;
+			
+			[Bindable]
+			public var contentImage2:String;
+			
+			[Bindable]
+			public var contentImage3:String;
+			
+			
+			public var alignImage:String;
+			
+			
+			//------------------------------------------------------------------------------
+			//		Headers
+			//------------------------------------------------------------------------------
+			
+			[Bindable]
+			public var header1:String='Header1';
+
+			[Bindable]
+			public var header2:String='Header2';
+
+			[Bindable]
+			public var header3:String='Header3';
+			
+			//------------------------------------------------------------------------------
+			//		Content copy
+			//------------------------------------------------------------------------------
+			
+			
+			[Bindable]
+			public var text1:String='Rich Internet Application developer primarily working in Flex since 2005 and flash since 1999.  In a former life I was a bit of a jogger.  Mostly left foot then right foot, but sometimes right foot then left foot.';
+			
+			[Bindable]
+			public var text2:String='Rich Internet Application developer primarily working in Flex since 2005 and flash since 1999.  In a former life I was a bit of a jogger.  Mostly left foot then right foot, but sometimes right foot then left foot.';
+			
+			[Bindable]
+			public var text3:String='Rich Internet Application developer primarily working in Flex since 2005 and flash since 1999.  In a former life I was a bit of a jogger.  Mostly left foot then right foot, but sometimes right foot then left foot.';
+
+			
+
+
+			protected function baseslide1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if(!header2)
+				{
+					textArea1.height = 200;
+					textArea2.height = 0;
+					header2Label.height = 0;
+				}
+				
+				if(alignImage)
+				{
+					if(alignImage == 'right')
+					{
+						extraImages.right = 50;
+						contentVbox.x = 50;
+						contentVbox.width = 600;
+					}
+				}
+				else
+				{
+					extraImages.x = 10;
+				}
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+
+	<slides:content>
+		<mx:VBox id="extraImages" 
+				 width="200"
+				 verticalScrollPolicy="off"
+				 horizontalScrollPolicy="off"
+				 x="10"
+				 >
+			<mx:Image id="extraImage1" source="{contentImage1}" maxHeight="171" maxWidth="171" scaleContent="true"/>
+			<mx:Image id="extraImage2" source="{contentImage2}" maxWidth="171" maxHeight="171" scaleContent="true"/>
+			<mx:Image id="extraImage3" source="{contentImage3}" maxWidth="171" maxHeight="171" scaleContent="true"/>
+		</mx:VBox>
+		<mx:VBox id="contentVbox"
+				 height="100%"
+				 x="200"
+				 horizontalScrollPolicy="off"
+				 verticalScrollPolicy="off"
+				 >
+	
+			<mx:Label id="header1Label"
+					  text="{header1}"
+					  styleName="basicTextStyle"/>
+	
+			<mx:HBox width="100%"
+					 horizontalScrollPolicy="off"
+					 verticalScrollPolicy="off">
+				<mx:Spacer width="50"/>
+				<mx:TextArea id="textArea1"
+							 height="100"
+							 text="{text1}"
+							 borderSkin="mx.skins.ProgrammaticSkin"
+							 styleName="basicTextAreaStyle"
+							 width="550"
+							 horizontalScrollPolicy="off"
+							 verticalScrollPolicy="off"/>
+			</mx:HBox>
+	
+			<mx:Label id="header2Label"
+					  text="{header2}"
+					  styleName="basicTextStyle"/>
+			<mx:HBox width="100%"
+					 horizontalScrollPolicy="off"
+					 verticalScrollPolicy="off">
+				<mx:Spacer width="50" id="spacer2"/>
+				<mx:TextArea id="textArea2"
+							 height="100"
+							 text="{text2}"
+							 borderSkin="mx.skins.ProgrammaticSkin"
+							 styleName="basicTextAreaStyle"
+							 width="550"
+							 horizontalScrollPolicy="off"
+							 verticalScrollPolicy="off"/>
+			</mx:HBox>
+	
+			<mx:Label id="header3Label"
+					  text="{header3}"
+					  styleName="basicTextStyle"/>
+	
+			<mx:HBox width="100%"
+					 horizontalScrollPolicy="off"
+					 verticalScrollPolicy="off">
+				<mx:Spacer width="50"/>
+				<mx:TextArea id="textArea3"
+							 height="100"
+							 text="{text3}"
+							 borderSkin="mx.skins.ProgrammaticSkin"
+							 styleName="basicTextAreaStyle"
+							 width="550"
+							 horizontalScrollPolicy="off"
+							 verticalScrollPolicy="off"/>
+			</mx:HBox>
+		</mx:VBox>
+	
+	</slides:content>
+
+</slides:BaseSlide>

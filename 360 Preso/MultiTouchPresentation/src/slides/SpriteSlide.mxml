@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<slides:BaseSlide xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" 
+				  xmlns:slides="slides.*" 
+				  width="100%" height="100%"
+				  creationComplete="baseslide1_creationCompleteHandler(event)" 
+				  show="baseslide1_showHandler(event)"
+				  xmlns:sampleCode="sampleCode.*"
+				  >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import sampleCode.GestureSprite;
+			import sampleCode.TouchSprite;
+			
+			import utils.TouchEplosions;
+			
+			[Bindable]
+			public var sprite:String; 
+			
+
+			protected function baseslide1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if(sprite == 'touch')
+				{
+					//contentCanvas.removeAllChildren();
+					var t:TouchEplosions = new TouchEplosions();
+					contentCanvas.addChild(t);
+					t.bottom = 0;
+					t.top = 0;
+					t.left=0;
+					t.right=0;
+					t.width = 600;
+					t.height = 400;
+					//touchSprite.visible = false;	
+				}
+				else if(sprite == 'gesture')
+				{
+					Multitouch.inputMode = MultitouchInputMode.GESTURE;
+					var g:GestureSprite = new GestureSprite();
+					g.source = "/assets/images/SimTheBeerSlut.jpg";
+					contentCanvas.removeAllChildren();
+					contentCanvas.addChild(g);
+					g.x=200;
+					g.y=50;
+					//touchSprite.visible = false;
+				}
+				
+				
+			}
+
+			protected function baseslide1_showHandler(event:FlexEvent):void
+			{
+				if(sprite == 'gesture')
+					Multitouch.inputMode = MultitouchInputMode.GESTURE;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<slides:content>
+		<mx:Canvas id="contentCanvas" 
+				 x="50" 
+				 width="100%" height="100%" />
+	</slides:content>
+</slides:BaseSlide>

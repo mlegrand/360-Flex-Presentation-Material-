@@ -1,0 +1,37 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/halo";
+
+
+@font-face 
+{
+	font-family: CaviarDreams;
+	src: url("assets/CaviarDreams.ttf");
+	embedAsCFF: false;
+}
+mx|Application {
+	font-family: CaviarDreams;
+}
+
+.basicTextStyle 
+{ 
+	font-family: CaviarDreams; 
+	font-size: 40pt;
+	color:#000000;
+}
+
+.basicTextAreaStyle 
+{ 
+	font-family: CaviarDreams; 
+	horizontal-scroll-policy:off;
+	vertical-scroll-policy:off;
+	background-color: #000000;
+	font-size: 20;
+	padding-right:4;
+	color:#000000;
+	border-style: none;
+	border-thickness:0;
+	selectable: false;
+	editable: false;
+	
+}

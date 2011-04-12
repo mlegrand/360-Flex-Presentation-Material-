@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/halo"
+					   applicationComplete="windowedapplication1_creationCompleteHandler(event)"
+					   width="1024" height="768"
+					   showStatusBar="false"
+					   xmlns:local="*" xmlns:ns="library://ns.adobe.com/flex/mx" 
+					   xmlns:slides="slides.*"
+					   >
+	<fx:Script>
+		<![CDATA[
+			import com.multitouchup.simConnect.SimConnection;
+			import com.multitouchup.trackPadConnector.TrackPadConnector;
+			import com.utils.NetworkUtil;
+			
+			import flash.events.KeyboardEvent;
+			import flash.events.MouseEvent;
+			import flash.net.NetworkInfo;
+			import flash.ui.Keyboard;
+			
+			import mx.collections.ArrayCollection;
+			import mx.containers.ViewStack;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import slides.ImageSlide;
+			import slides.SlideCanvas;
+			import slides.SpriteSlide;
+			import slides.VideoSlide;
+
+			public static const THRESHOLD:int = 700;
+			
+			protected var slides:ArrayCollection = new ArrayCollection();
+			
+			//protected var simConnect:SimConnection;
+			
+			protected var lastUpdate : uint = 0;
+			
+			protected var tpc:TrackPadConnector;
+			
+			[Bindable]
+			protected var showingLocation:Boolean; 
+			
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				getSlides.send();
+				//httpservice1_resultHandler(null)
+				this.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDownHandler);
+				//   try the new connect 
+				tpc = new TrackPadConnector(this.stage, false, debuggerCanvas);
+			}
+			
+			override protected function keyDownHandler(event:KeyboardEvent) : void
+			{
+				super.keyDownHandler(event);
+				trace(event.keyCode);
+			}
+			
+			protected function onKeyDownHandler(event:KeyboardEvent):void
+			{
+				if(event.keyCode == Keyboard.RIGHT)
+				{
+					if(viewStack.selectedIndex < (viewStack.numChildren - 1))
+					{
+						viewStack.selectedIndex++;
+					}
+				}
+				else if(event.keyCode == Keyboard.LEFT)
+				{
+					if(viewStack.selectedIndex >0)
+					{
+						viewStack.selectedIndex--;
+					}
+				}
+				else if(event.keyCode == Keyboard.B)
+				{
+					showingLocation = (showingLocation)? false : true;
+				}
+					
+			}
+
+			protected function viewStack_clickHandler(event:MouseEvent):void
+			{
+				if(viewStack.selectedIndex < (viewStack.numChildren - 1))
+				{
+					//viewStack.selectedIndex++;
+				}
+			}
+
+
+			protected function httpservice1_resultHandler(event:ResultEvent):void
+			{
+				slides = event.result.slides.slide as ArrayCollection;
+				addSlides(slides);
+			}
+			
+			protected function addSlides(slides:ArrayCollection) : void
+			{
+				for each ( var o:Object in slides)
+				{
+					
+					if(o.hasOwnProperty('video'))
+					{
+						addVideoSlide(o);
+					}
+					else if(o.hasOwnProperty('swf'))
+					{
+						addSpriteSlide(o)
+					}
+					else if(o.hasOwnProperty('image'))
+					{
+						addImageSlide(o)
+					}
+					else
+					{
+						addSlide(o);
+					}
+				}
+			}
+			
+			protected function addSpriteSlide(o:Object):void
+			{
+				var slide:SpriteSlide = new SpriteSlide();
+				//title
+				slide.slideTitle = o.title;
+				
+				//bottom image
+				slide.sprite = o.swf	;
+				
+				//bottom image
+				slide.bottomImageSource = o.bottomImage;
+				
+				//remember to add it
+				viewStack.addChild(slide);
+			}
+			
+			protected function addImageSlide(o:Object):void
+			{
+				var slide:ImageSlide = new ImageSlide();
+				//title
+				slide.slideTitle = o.title;
+				
+				//bottom image
+				slide.transparentImageSource = o.image;
+				
+				//bottom image
+				slide.bottomImageSource = o.bottomImage;
+				
+				//remember to add it
+				viewStack.addChild(slide);
+			}
+			
+			protected function addVideoSlide(o:Object):void
+			{
+				var slide:VideoSlide = new VideoSlide();
+				//title
+				slide.slideTitle = o.title;
+				
+				//bottom image
+				slide.videoSource = o.video;
+				
+				//start time
+				slide.startTime = o.startTime as Number;
+				
+				//bottom image
+				slide.bottomImageSource = o.bottomImage;
+				
+				//remember to add it
+				viewStack.addChild(slide);
+			}
+				
+			protected function addSlide(o:Object):void
+			{
+				var slide:SlideCanvas = new SlideCanvas();
+				//title
+				slide.slideTitle = o.title;
+				//headers
+				slide.header1 = o.header1;
+				slide.header2 = o.header2;
+				slide.header3 = o.header3;
+				//content
+				slide.text1 = o.text1;
+				slide.text2 = o.text2;
+				slide.text3 = o.text3;
+				
+				//content images
+				slide.contentImage1 = o.contentImage1;
+				slide.contentImage2 = o.contentImage2;
+				slide.contentImage3 = o.contentImage3;
+				
+				//image align
+				
+				slide.alignImage = o.alignImage;
+				
+				//bottom image
+				slide.bottomImageSource = o.bottomImage;
+				
+				viewStack.addChild(slide);
+			}
+
+
+			protected function httpservice1_faultHandler(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultString);
+			}
+
+
+			protected function viewStack_gestureSwipeHandler(event:TransformGestureEvent):void
+			{
+				if ( getTimer()-lastUpdate > THRESHOLD )
+				{
+					if(event.offsetX > 2)
+					{
+						trace('Swipe Left')
+						if(viewStack.selectedIndex < viewStack.numChildren-1)
+						{
+							viewStack.selectedIndex++;
+						}
+					}
+					else if (event.offsetX < -2)
+					{
+						trace('Swipe Right')
+						if(viewStack.selectedIndex>0)
+						{
+							viewStack.selectedIndex--;
+						}
+						
+					}
+					lastUpdate = getTimer();
+				}
+			}
+
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				//simConnect = new SimConnection(this.stage, 3333, locationTI.text, debuggerCanvas, true);
+			}
+
+			
+			protected function checkAUsersCapabilities():void
+			{
+				var numberOfTouchPoints:Number = Multitouch.maxTouchPoints;
+				var supportedGestures:Vector.<String> = Multitouch.supportedGestures;
+				var gesturesAvailable:Boolean = Multitouch.supportsGestureEvents;
+				var touchEventsAvailable:Boolean = Multitouch.supportsTouchEvents;
+				var touchScreenType:String = Capabilities.touchscreenType;
+				//TouchscreenType.FINGER
+				//TouchscreenType.STYLUS
+				//TouchscreenType.NONE
+			}
+			
+			protected function switchMultitouchInputModeToGesture():void
+			{
+				if(Multitouch.supportsGestureEvents)
+				{
+					Multitouch.inputMode = MultitouchInputMode.GESTURE;
+				}
+			}
+			
+			protected function switchMultitouchInputModeToRawTouch():void
+			{
+				if(Multitouch.supportsTouchEvents)
+				{
+					Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+				}
+			}
+			
+			//break needed between events
+			protected static const EVENT_BREAK_AMOUNT:Number = 200; 
+			protected static const MIN_ZOOM:Number = 1.03;
+			protected static const MIN_PINCH:Number = 0.97;
+			protected var lastEventUpdate:Number = 0;
+			protected function gestureThresholdUpdate(event:TransformGestureEvent):void
+			{
+				if ( getTimer()-lastEventUpdate > EVENT_BREAK_AMOUNT )
+				{
+					if ( event.scaleX > MIN_ZOOM && event.scaleY > MIN_ZOOM )
+					{
+						//perform zoom
+						lastUpdate = getTimer();
+					} 
+					else if ( event.scaleX < MIN_PINCH && event.scaleY < MIN_PINCH )
+					{
+						//perform pinch
+						lastUpdate = getTimer();
+					} 
+				}
+			}
+				
+			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Style source="assets/style.css" />
+	
+	
+	<fx:Declarations>
+		
+		
+		
+		<fx:XML source="slideXML.xml" id="slid" />
+		
+		<s:HTTPService url="slideXML.xml" id="getSlides" result="httpservice1_resultHandler(event)" fault="httpservice1_faultHandler(event)" />
+	</fx:Declarations>
+	
+	<ns:ViewStack id="viewStack" height="100%" 
+				  gestureSwipe="viewStack_gestureSwipeHandler(event)"
+				  backgroundColor="#FFFFFF"
+				  width="100%" 
+				  
+				  click="viewStack_clickHandler(event)"
+				  horizontalScrollPolicy="off"
+				  verticalScrollPolicy="off"
+				  >
+		<slides:IntroSlide width="100%" height="100%" />
+		<!--<local:SlideCanvas width="100%" height="100%" />-->
+		
+	</ns:ViewStack>
+	<ns:TextInput y="25" text="{NetworkUtil.getIpAddress(NetworkInfo.networkInfo.findInterfaces())}" 
+				  id="locationTI" 
+				  visible="{showingLocation}"  />
+	<ns:Button y="50" label="Location" click="button1_clickHandler(event)" visible="{showingLocation}"  />
+	<s:SpriteVisualElement id="debuggerCanvas" height="100%" width="100%"/>
+</s:WindowedApplication>
