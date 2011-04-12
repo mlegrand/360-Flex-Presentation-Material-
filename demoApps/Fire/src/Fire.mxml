@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   backgroundColor="#000000"
+					   contentBackgroundColor="#000000"
+					   backgroundAlpha="1"
+					   contentBackgroundAlpha="1"
+					   showStatusBar="false"
+					   applicationComplete="windowedapplication1_appCompleteHandler(event)" 
+					   xmlns:panel="panel.*" 
+					   xmlns:fire="fire.*">
+
+	<fx:Script>
+		<![CDATA[
+			import com.multitouchup.simConnect.SimConnection;
+			
+			import flash.display.StageDisplayState;
+			import flash.events.TouchEvent;
+			import flash.ui.Multitouch;
+			import flash.ui.MultitouchInputMode;
+			
+			import mx.events.FlexEvent;
+
+			[Bindable]
+			protected var showingLocation:Boolean
+			
+			protected function windowedapplication1_appCompleteHandler(event:FlexEvent):void
+			{
+				Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+				this.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDownHandler);
+				
+			}
+			
+			
+			protected function onKeyDownHandler(event:KeyboardEvent):void
+			{
+				if(event.keyCode == Keyboard.B)
+				{
+					showingLocation = (showingLocation)? false : true;
+				}
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var simConnect:SimConnection = new SimConnection(this.stage, 3333, locationTI.text);
+				showingLocation = (showingLocation)? false : true;
+			}
+			
+			protected function IMAGE_touchMoveHandler(event:TouchEvent):void
+			{
+				trace('TouchMOVE');
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="style/style.css"/>
+
+	<panel:BasicPanel width="100%" height="100%"
+					  borderColor="#000000" 
+					  contentBackgroundColor="#000000"
+					  borderAlpha=".95"
+					  backgroundColor="#111111"
+					  chromeColor="#000000"
+					  headerHeight="55"
+					  layout="absolute"
+					  horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		
+		<fire:Fire  id="FIRE" x="0" y="0" width="100%" height="100%" /> 
+	</panel:BasicPanel>
+	<mx:TextInput y="25" text="10.0.1.4" id="locationTI" visible="{showingLocation}"  />
+	<mx:Button y="50" label="Location" click="button1_clickHandler(event)" visible="{showingLocation}"  />
+</s:WindowedApplication>

@@ -1,0 +1,21 @@
+<languageVersion : 1.0;>
+
+kernel BitmapDataToByteArrayVVS
+<   namespace : "com.derschmale";
+    vendor : "DerSchmale.com";
+    version : 1;
+    description : "Maps channels of a BitmapData object to a ByteArray, no alpha. First two values are vector coordinates";
+>
+{
+    input image4 src;
+    output float3 dst;
+    
+    void evaluatePixel()
+    {
+        pixel4 rgb = sampleNearest(src,outCoord());
+        
+        dst.x = (rgb.r-0.5)*2.0;
+        dst.y = (rgb.g-0.5)*2.0;
+        dst.z = rgb.b;
+    }
+}

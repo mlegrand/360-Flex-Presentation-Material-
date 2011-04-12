@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		title="HomeView"
+		>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import utils.TouchEplosions;
+			
+			[Bindable]
+			protected var ac:ArrayCollection = new ArrayCollection([{label:'TouchExplosion', viewClass:TouchExplosion},
+				{label:'Hardware Capabilities', viewClass:CapabilitiesTrace},
+				{label:'Drawable', viewClass:Drawable},
+				{label:'Touch Trace', viewClass:TouchTrace}])
+			
+			protected function list1_changeHandler(event:IndexChangeEvent):void
+			{
+				//var te:TouchExplosion = new TouchExplosion();
+				navigator.pushView(list.selectedItem.viewClass as Class);
+			}
+			
+		]]>
+	</fx:Script>
+<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:List id="list" dataProvider="{ac}" 
+			height="100%" width="100%" 
+			change="list1_changeHandler(event)"/>
+	
+</s:View>

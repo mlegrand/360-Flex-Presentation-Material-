@@ -1,0 +1,28 @@
+/* CSS file */
+
+
+.closeBtnStyle{
+	skin: Embed(source="/assets/icons/close.png");
+}
+
+
+.settingsBtnStyle{
+	skin: Embed(source="/assets/icons/settings.png");
+}
+
+
+.minBtnStyle{
+	skin: Embed(source="/assets/icons/remove.png");
+}
+
+
+.maxBtnStyle{
+	skin: Embed(source="/assets/icons/add.png");
+}
+
+.refreshBtnStyle{
+	skin: Embed(source="/assets/icons/redo.png");
+}
+
+
+

@@ -1,0 +1,25 @@
+<languageVersion : 1.0;>
+
+kernel BitmapDataToByteArray
+<   namespace : "com.derschmale";
+    vendor : "DerSchmale.com";
+    version : 1;
+    description : "Maps channels of a BitmapData object to a ByteArray, no alpha";
+>
+{
+    input image4 src;
+    output float3 dst;
+    
+    parameter int r < defaultValue: 0; >;
+    parameter int g < defaultValue: 0; >;
+    parameter int b < defaultValue: 0; >;
+    
+    void evaluatePixel()
+    {
+        pixel4 rgb = sampleNearest(src,outCoord());
+        
+        if (r != 0) dst.x = rgb.r;
+        if (g != 0) dst.y = rgb.g;
+        if (b != 0) dst.z = rgb.b;
+    }
+}

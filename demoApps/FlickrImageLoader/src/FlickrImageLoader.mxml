@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+				layout="absolute" 
+				minWidth="1024" minHeight="768" 
+				xmlns:imageLoader="com.alagad.components.imageLoader.*">
+	
+	<imageLoader:ImageLoader source="http://farm4.static.flickr.com/3182/2877439528_faf5141568.jpg" width="800" height="1200" />
+		
+	
+	
+</mx:Application>

@@ -1,0 +1,20 @@
+<languageVersion : 1.0;>
+
+kernel GenerateDensityGradient
+<   namespace : "com.derschmale";
+    vendor : "DerSchmale.com";
+    version : 1;
+    description : "Creates the gradient field for the density field to use as a displacement map";
+>
+{
+    input image4 src;
+    output pixel4 dst;
+
+    void evaluatePixel()
+    {
+        dst.r = (sampleNearest(src,outCoord()).b-sampleNearest(src,outCoord()+float2(1.0, 0.0)).b)*.5+.5;
+        dst.g = (sampleNearest(src,outCoord()).b-sampleNearest(src,outCoord()+float2(0.0, 1.0)).b)*.5+.5;
+        dst.b = 0.0;
+        dst.a = 1.0;
+    }
+}

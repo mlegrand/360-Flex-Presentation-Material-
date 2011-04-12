@@ -1,0 +1,72 @@
+<languageVersion : 1.0;>
+
+kernel UpdateVelocities
+<   namespace : "com.derschmale";
+    vendor : "Der Schmale";
+    version : 1;
+    description : "Updates the velocity field for the fluid simulation.";
+>
+{
+    input image3 velocityPressureField;
+    output pixel3 dst;
+    
+    parameter float dt <    minValue : 0.0;
+                            maxValue : 1.0;
+                            defaultValue : 1.0;
+                        >;
+    parameter float viscosity < minValue : 0.0;
+                                maxValue : 1.0;
+                                defaultValue : 0.1;
+                            >;
+    parameter float drag <  minValue : 0.0;
+                            maxValue : 1.0;
+                            defaultValue : 0.01;
+                        >;
+    
+    void evaluatePixel()
+    {
+        float2 coord = outCoord();
+
+        float velDiff, pressDiff, gradient;
+        
+        float3 p_ij = sampleNearest(velocityPressureField, coord);
+        float3 p_i1j = sampleNearest(velocityPressureField, coord+float2(1.0, 0.0));
+        float3 p_i_1j = sampleNearest(velocityPressureField, coord+float2(-1.0, 0.0));
+        float3 p_ij1 = sampleNearest(velocityPressureField, coord+float2(0.0, 1.0));
+        float3 p_ij_1 = sampleNearest(velocityPressureField, coord+float2(0.0, -1.0));
+        float3 p_i1j_1 = sampleNearest(velocityPressureField, coord+float2(1.0, -1.0));
+        float3 p_i_1j1 = sampleNearest(velocityPressureField, coord+float2(-1.0, 1.0));
+        
+        float u_ij = (p_i_1j.x+p_ij.x)*.5;
+        float u_i1j = (p_ij.x+p_i1j.x)*.5;
+        float u_i5j_5 = (p_ij.x+p_ij_1.x)*.5;
+        float u_i5j5 = (p_ij.x+p_ij1.x)*.5;
+        float u_i_5j5 = (p_i_1j.x+p_i_1j1.x)*.5;
+        
+        float v_ij = (p_ij.y + p_ij_1.y)*.5;
+        float v_ij1 = (p_ij.y + p_ij1.y)*.5;
+        float v_i5j_5 = (p_ij_1.y+p_i1j_1.y)*.5;
+        float v_i5j5 = (p_ij.y+p_i1j.y)*.5;
+        float v_i_5j5 = (p_ij.y+p_i_1j.y)*.5;
+        
+        
+        velDiff = u_ij*u_ij - u_i1j*u_i1j + u_i5j_5*v_i5j_5 - u_i5j5*v_i5j5;
+        gradient = p_i1j.x + p_i_1j.x + p_ij1.x + p_ij_1.x - 4.0*p_ij.x;
+        pressDiff = p_ij.z - p_i1j.z;
+        
+        dst.x = p_ij.x+dt*(velDiff+viscosity*gradient+pressDiff-drag*p_ij.x);
+        
+        if (dst.x > 1.0) dst.x = 1.0;
+        else if (dst.x < -1.0) dst.x = -1.0;
+        
+        velDiff = v_ij*v_ij - v_ij1*v_ij1 + u_i_5j5*v_i_5j5 - u_i5j5*v_i5j5;
+        gradient = p_i1j.y + p_i_1j.y + p_ij1.y + p_ij_1.y - 4.0*p_ij.y;
+        pressDiff = p_ij.z - p_ij1.z;
+        dst.y = p_ij.y+dt*(velDiff+viscosity*gradient+pressDiff-drag*p_ij.y);
+        
+        if (dst.y > 1.0) dst.y = 1.0;
+        else if (dst.y < -1.0) dst.y = -1.0;
+        
+        dst.z = p_ij.z;
+    }
+}

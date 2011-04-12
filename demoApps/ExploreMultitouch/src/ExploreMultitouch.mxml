@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+							xmlns:s="library://ns.adobe.com/flex/spark" 
+							firstView="views.ExploreMultitouchHomeView" 
+							applicationDPI="160"
+							splashScreenImage="@Embed(source='assets/stitch_rasied1.jpg')"
+							>
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.DropShadowFilter;
+			
+			import skins.EmptyButtonSkin;
+			
+			import spark.components.supportClasses.Skin;
+			import spark.filters.BevelFilter;
+			import spark.skins.SparkButtonSkin;
+			import spark.skins.SparkSkin;
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(navigator.length > 1)
+				{
+					navigator.popView();
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:titleContent>
+			<s:Button label="Back"  
+					  click="button1_clickHandler(event)" 
+					  skinClass="{EmptyButtonSkin}"/>
+			<s:Rect width="1" height="90%" alpha="0.5">
+				<s:fill>
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry color="0xFFFFFF" alpha="0"/>
+						<s:GradientEntry color="0xFFFFFF" alpha="1"/>
+						<s:GradientEntry color="0xFFFFFF" alpha="0"/>
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			<s:Spacer width="35"/>
+			<s:Label text="Multitouch Explorer" color="0xCCCCCC" fontWeight="bold" fontSize="30" 
+					 filters="{[new DropShadowFilter(2, 45, 0, 0.35, 3, 3, 1, 1, true)]}"/>
+	</s:titleContent>
+	<s:actionContent>
+	</s:actionContent>
+</s:ViewNavigatorApplication>

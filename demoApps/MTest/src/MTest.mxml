@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/halo"
+					   backgroundColor="0x333333"
+					   xmlns:local="*"
+					   applicationComplete="windowedapplication1_applicationCompleteHandler(event)"
+					   creationComplete="windowedapplication1_creationCompleteHandler(event)"
+					   xmlns:ns="library://ns.adobe.com/flex/mx" xmlns:panel="panel.*">
+	<fx:Script>
+		<![CDATA[
+			import com.multitouchup.simConnect.SimConnection;
+			
+			import flash.display.DisplayObject;
+			import flash.display.StageDisplayState;
+			import flash.events.Event;
+			import flash.events.TouchEvent;
+			import flash.filters.DropShadowFilter;
+			import flash.ui.MultitouchInputMode;
+			
+			import mx.core.IContainer;
+			import mx.events.FlexEvent;
+
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+			}
+			
+			protected function enterFrame(event:Event):void
+			{
+			}
+			
+			protected function windowedapplication1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				addEventListener(Event.ENTER_FRAME, enterFrame);
+				Multitouch.inputMode = MultitouchInputMode.GESTURE;
+				var s:SimConnection = new SimConnection(this.stage, 3333, "127.0.0.1", debugCan, false, false);
+				stage.displayState =  StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			}
+
+
+			protected var offsetX:Number;
+			protected var offsetY:Number;
+			
+			protected function image_touchBeginHandler(event:TouchEvent):void
+			{
+				offsetX = event.localX;
+				offsetY = event.localY;
+				image.addEventListener(TouchEvent.TOUCH_MOVE, image_touchMoveHandler);
+			}
+
+
+			protected function image_touchEndHandler(event:TouchEvent):void
+			{
+				image.removeEventListener(TouchEvent.TOUCH_MOVE, image_touchMoveHandler);
+				stage.removeEventListener(TouchEvent.TOUCH_END, image_touchEndHandler);
+			}
+
+
+			protected function image_touchMoveHandler(event:TouchEvent):void
+			{
+				if(event.stageX ==0)
+				{
+					trace('yeah o')
+				}
+				
+				image.x = event.stageX - offsetX;
+				image.y = event.stageY - offsetY;
+				image.addEventListener(TouchEvent.TOUCH_END, image_touchEndHandler);
+			}
+			
+			
+			protected function moveToFront(dispO:DisplayObject):void
+			{
+				var p:IContainer = dispO.parent as IContainer;
+				p.removeChild(dispO);
+				p.addChild(dispO);
+			}
+			
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="style/style.css"/>
+	
+	<panel:BasicPanel width="100%" height="100%"
+					  borderColor="#000000" 
+					  contentBackgroundAlpha="1"
+					  contentBackgroundColor="#000000"
+					  borderAlpha=".95"
+					  chromeColor="#000000"
+					  backgroundColor="#111111"
+					  headerHeight="55"
+					  layout="absolute"
+					  horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		
+		
+		<local:RSCanvas height="768" width="1024" 
+						horizontalScrollPolicy="off" 
+						verticalScrollPolicy="off" 
+						x="100" y="50" 
+						backgroundAlpha="1"  backgroundColor="#777777">
+		
+			<local:RSImage id="image"
+						   x="500" y="100"
+						   filters="{[new DropShadowFilter(2, 90, 0, 0.75, 8, 8)]}"
+						   mouseDown="image.startDrag(); moveToFront(image)"
+						   mouseUp="image.stopDrag()"
+						   source="@Embed(source='TG.jpg')"/>
+			
+			<local:RSImage id="image2"
+						   x="600" y="200"
+						   filters="{[new DropShadowFilter(2, 90, 0, 0.75, 8, 8)]}"
+						   mouseDown="image2.startDrag(); moveToFront(image2)"
+						   mouseUp="image2.stopDrag()"
+						   source="@Embed(source='pmt.jpg')"/>
+			<local:RSImage id="image3"
+						   x="100" y="100"
+						   filters="{[new DropShadowFilter(2, 90, 0, 0.75, 8, 8)]}"
+						   mouseDown="image3.startDrag(); moveToFront(image3)"
+						   mouseUp="image3.stopDrag()"
+						   source="@Embed(source='WordlMultitouch.jpg')"/>
+			<local:RSImage id="image4"
+						   x="200" y="300"
+						   filters="{[new DropShadowFilter(2, 90, 0, 0.75, 8, 8)]}"
+						   mouseDown="image4.startDrag(); moveToFront(image4)"
+						   mouseUp="image4.stopDrag()"
+						   source="@Embed(source='newIntro.jpg')"/>
+			
+			<local:RSVideo id="video"
+						   width="300"
+						   height="200"
+						   autoPlay="false"
+						   click="(video.playing)? video.pause() : video.play()"
+						   mouseDown="video.startDrag(); moveToFront(video)"
+						   filters="{[new DropShadowFilter(2, 90, 0, 0.75, 8, 8)]}"
+						   mouseUp="video.stopDrag()"
+						   x="200"
+						   y="500"
+						   source="Magic_Mouse.flv"
+						   volume="0.75"/>
+			<local:RSVideo id="video2"
+						   width="300"
+						   height="200"
+						   autoPlay="false"
+						   click="(video2.playing)? video2.pause() : video2.play()"
+						   mouseDown="video2.startDrag();moveToFront(video2)"
+						   filters="{[new DropShadowFilter(2, 90, 0, 0.75, 8, 8)]}"
+						   mouseUp="video2.stopDrag()"
+						   x="600"
+						   y="500"
+						   source="circle_intro.flv"
+						   volume="0.75"/>
+			
+		</local:RSCanvas>
+	</panel:BasicPanel>
+	
+	<ns:Canvas id="debugCan" width="100%" height="100%" />
+</s:Application>

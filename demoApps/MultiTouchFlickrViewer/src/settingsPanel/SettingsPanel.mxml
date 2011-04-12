@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			
+			
+			public static const HTML_TEXT:String = "17 digits?  Help me out:      \n" + 
+					"   Log into your Flickr account and <a href='http://www.flickr.com/services/api/explore/?method=flickr.photosets.getPhotos'><u>Click Here</u></a>   " + 
+					" If you don't see anything under 'Your recent photoset IDs:' then you need to create a photo set.  You can do that by <a href='http://www.flickr.com/photos/organize/?start_tab=sets'><u>Clicking Here</u></a>";
+			
+			
+			/**
+			 * Max number of pics. 
+			 * Between 10 -100
+			 * 
+			 * @default 	50
+			 */ 
+			[Bindable]
+			public var maxNumberOfPics:Number = 50;
+
+			/**
+			 * Picture starting size. 
+			 * Between 0 -1
+			 * 
+			 * @default 	0.5
+			 */ 
+			[Bindable]
+			public var picStartingSize:Number = 0.5;
+
+			[Bindable]
+			public var flickrPhotoSetId:String = "recent";
+			
+			protected function textInputChange():void
+			{
+				flickrPhotoSetId = flickrPhotoSetIdTextInput.text;
+			}
+			
+			protected function picSliderChangeHandler():void
+			{
+				picStartingSize = picSizeSlider.value;
+			}
+			
+			protected function maxNumChangeHandler():void
+			{
+				maxNumberOfPics = maxNumberSlider.value;
+			}
+			
+		]]>
+	</mx:Script>
+
+	<mx:Spacer height="20"/>
+	<!--
+	17 digit Example PhotoSet ID
+	72157594433368939
+	-->
+	<mx:FormItem color="#FFFFFF" label="17 Digit Flickr Photoset ID: ">
+		<mx:TextInput color="#000000" id="flickrPhotoSetIdTextInput" change="textInputChange()" text="{flickrPhotoSetId}"/>
+	</mx:FormItem>
+	<mx:TextArea htmlText="{HTML_TEXT}" 
+		width="80%" 
+		height="90"
+		color="#FFFFFF"  
+		backgroundAlpha="0"
+		borderStyle="none" 
+		wordWrap="true" 
+		editable="false" selectable="false"/>
+	<mx:FormItem color="#FFFFFF" label="Picture Starting size: ">
+		<mx:HSlider id="picSizeSlider" 
+			change="picSliderChangeHandler()" 
+			width="80%" 
+			minimum="0" maximum="1" 
+			value="{picStartingSize}"/>
+	</mx:FormItem>
+	<mx:FormItem color="#FFFFFF" label="Max Number of Pictures: ">
+		<mx:HSlider id="maxNumberSlider" 
+			snapInterval="1"
+			change="maxNumChangeHandler()" 
+			width="80%" 
+			minimum="10" maximum="100" 
+			value="{maxNumberOfPics}"/>
+	</mx:FormItem>	
+</mx:VBox>

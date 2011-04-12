@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		title="TouchTrace"
+		creationComplete="view1_creationCompleteHandler(event)"
+		backgroundColor="0x000000"
+		>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			private var isGesture:Boolean;
+			
+			protected var timer:Timer;
+			
+			public static const TIME_AMOUNT:Number = 4000;
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				addTouchListeners();
+				addTransformListeners();
+				this.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown_handler);
+				startTimer();
+			}
+			
+			protected function startTimer():void
+			{
+				timer = new Timer(TIME_AMOUNT);
+				timer.addEventListener(TimerEvent.TIMER, timerEvent_timerHandler)
+				timer.start()
+			}
+			
+			protected function addTransformListeners():void
+			{
+				this.addEventListener(TransformGestureEvent.GESTURE_PAN,
+					transformEventHandler);
+				this.addEventListener(TransformGestureEvent.GESTURE_ROTATE,
+					transformEventHandler);
+				this.addEventListener(TransformGestureEvent.GESTURE_SWIPE,
+					transformEventHandler);
+				this.addEventListener(TransformGestureEvent.GESTURE_ZOOM,
+					transformEventHandler);
+			}
+			
+			protected function addTouchListeners():void
+			{
+				this.addEventListener(TouchEvent.TOUCH_BEGIN, touchEventHandler, false, 0, true);
+				this.addEventListener(TouchEvent.TOUCH_END, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_MOVE, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_OUT, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_OVER, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_ROLL_OUT, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_ROLL_OVER, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_TAP, touchEventHandler);
+			}
+			
+			protected function touchEventHandler(event:TouchEvent) : void
+			{
+				eventLabel.text = event.toString() + "\n" + eventLabel.text;
+			}
+			
+			protected function transformEventHandler ( event :
+													   TransformGestureEvent ) :void
+			{
+				eventLabel.text = event.toString() + "\n" + eventLabel.text;
+			}
+			
+			protected function button1_clickHandler(event:*):void
+			{
+				if(isGesture)
+				{
+					isGesture = false;
+					Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT
+				}
+				else
+				{
+					isGesture = true;
+					Multitouch.inputMode = MultitouchInputMode.GESTURE
+				}
+			}
+			
+			protected function mouseDown_handler(event:MouseEvent):void
+			{
+				trace('mouseDown');
+			}
+			
+			protected function timerEvent_timerHandler(event:TimerEvent):void
+			{
+				eventLabel.text = 'Waiting for those touch events . . .';
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:TextArea id="eventLabel" 
+				height="100%" width="100%" 
+				borderVisible="false"
+				verticalScrollPolicy="off" horizontalScrollPolicy="off"
+				fontSize="24"
+				color="#FFFFFF"
+				selectable="false" editable="false" 
+				mouseChildren="false"
+				contentBackgroundAlpha="0" 
+				text="Waiting for those touch events . . ."
+				/>
+	
+	<s:Button click="button1_clickHandler(event)"
+			   label="Toggle Touch Type" 
+			   right="20" 
+			   top="20"
+			   touchBegin="button1_clickHandler(event)"
+			   color="#FFFFFF" />
+</s:View>

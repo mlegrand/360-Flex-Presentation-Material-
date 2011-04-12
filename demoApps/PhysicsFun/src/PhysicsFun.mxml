@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/halo" 
+					   applicationComplete="windowedapplication1_applicationCompleteHandler(event)"
+					   creationComplete="windowedapplication1_creationCompleteHandler(event)"
+					   backgroundColor="0x000000"
+					   width="1024" height="768"
+					   xmlns:TestBed="TestBed.*" xmlns:local="*">
+	<fx:Script>
+		<![CDATA[
+			import com.multitouchup.simConnect.SimConnection;
+			
+			import mx.events.FlexEvent;
+			
+
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			}
+
+
+			protected function windowedapplication1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				if(this.stage)
+				{
+					this.addElement(new Main(this.stage));
+					var s:SimConnection = new SimConnection(this.stage);
+				}
+			}
+
+		]]>
+	</fx:Script>
+			
+	
+</s:WindowedApplication>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/halo"
+					   backgroundColor="#000000"
+					   showStatusBar="false"
+					   xmlns:panel="panel.*" 
+					   xmlns:mx1="library://ns.adobe.com/flex/mx"
+					   applicationComplete="windowedapplication1_applicationCompleteHandler(event)"
+					   creationComplete="windowedapplication1_creationCompleteHandler(event)"
+					   >
+	<fx:Script>
+		<![CDATA[
+			import com.derschmale.fluids.ShallowWaterContainer;
+			import com.multitouchup.simConnect.SimConnection;
+			
+			import flash.events.MouseEvent;
+			import flash.events.TouchEvent;
+			import flash.ui.Multitouch;
+			import flash.ui.MultitouchInputMode;
+			
+			import mx.events.FlexEvent;
+			
+			protected var ripple:ShallowWaterContainer;
+			
+			[Embed (source='CloudyWaves.jpg')]
+			protected var CloudyWave:Class;
+			
+			protected var touchMap : Array  = [];
+			
+			protected var s:SimConnection;
+			
+
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+				addRipple();
+			}
+			
+			protected function simConnect():void
+			{
+				s = new SimConnection(this.stage, 3333, "127.0.0.1");
+			}
+			
+			protected function addRipple() : void
+			{
+				ripple = new ShallowWaterContainer(1000,650, 200, 200);
+				ui.addChild(ripple);
+				ripple.timeStep = 1;
+				ripple.viscosity =0.2;
+				ripple.relaxation = 0.15;
+				ripple.relaxationSteps = 2;
+				
+				ripple.addChild(new CloudyWave());
+				/* 
+				this.addEventListener(MouseEvent.MOUSE_MOVE, touchMoveHandler);
+				this.addEventListener(MouseEvent.MOUSE_DOWN, touchEndHandler);
+				this.addEventListener(MouseEvent.MOUSE_UP, touchMoveHandler);
+				 */
+				this.addEventListener(TouchEvent.TOUCH_BEGIN, touchBeginHandler);
+				this.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
+				this.addEventListener(TouchEvent.TOUCH_MOVE, touchMoveHandler);
+			}
+			
+			protected function touchBeginHandler(event:TouchEvent):void
+			{
+				var key : String = event.touchPointID.toString();
+				var touchPoint:Object = {};
+				touchPoint.x = event.localX;
+				touchPoint.y = event.localY;
+				touchPoint.sizeX = event.sizeX;
+				touchPoint.sizeY = event.sizeY;
+				touchMap[ key ] = touchPoint;
+			}
+			
+			protected function touchEndHandler(event:TouchEvent):void
+			{
+				var key : String = event.touchPointID.toString();
+				delete touchMap [ key ];
+			}
+			
+			protected function touchMoveHandler(event:TouchEvent):void
+			{
+				var key : String = event.touchPointID.toString();
+				if(touchMap [ key ])
+				{
+					ripple.addVelocity( event.localX, event.localY, 
+						(event.localX - touchMap[key].x),
+						(event.localY -  touchMap [ key ].y), 5, 1);
+					ripple.addPressure(event.localX, event.localY, 7, 1);
+					
+					// update touchpoint in map
+					
+					touchMap[key].x = event.localX;
+					touchMap[key].y = event.localY;
+					touchMap[key].sizeX = event.sizeX;
+					touchMap[key].sizeY = event.sizeY;
+				}
+			}
+
+			protected function windowedapplication1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="style/style.css"/>
+	
+	<panel:BasicPanel width="100%" height="100%"
+					  borderColor="#000000" 
+					  contentBackgroundColor="#000000"
+					  chromeColor="#000000"
+					  borderAlpha=".95"
+					  backgroundColor="#111111"
+					  headerHeight="55"
+					  layout="absolute"
+					  horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		
+		<mx1:UIComponent id="ui" width="1020" height="642"  horizontalCenter="0" verticalCenter="0"/>
+	</panel:BasicPanel>
+	
+</s:WindowedApplication>

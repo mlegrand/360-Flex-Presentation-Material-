@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/halo" 
+					   xmlns:modestmaps="com.modestmaps.*" 
+					   applicationComplete="windowedapplication1_appCompleteHandler(event)"
+					   xmlns:flex="com.modestmaps.flex.*"
+					   xmlns:panel="panel.*">
+	<fx:Script>
+		<![CDATA[
+			import flash.events.Event;
+			import flash.events.MouseEvent;
+			import flash.events.TransformGestureEvent;
+			import flash.ui.Multitouch;
+			import flash.ui.MultitouchInputMode;
+			import flash.utils.getTimer;
+			
+			import mx.events.FlexEvent;
+			
+			public static const IDLE_THRESHOLD:Number= 300;
+			protected var lastUpdate : uint = 0;			
+			
+			protected var mapProviders:Array = ['MICROSOFT_AERIAL', 'MICROSOFT_HYBRID', 'MICROSOFT_ROAD'];
+			
+			protected var currentProvider:int = 0;
+			
+			protected function modestmaps_doubleClickHandler(event:MouseEvent):void
+			{
+				modestmaps.map.onDoubleClick(event);
+			}
+			
+			protected function panHandler(event:TransformGestureEvent):void
+			{
+				if(getTimer() -lastUpdate > IDLE_THRESHOLD)
+				{
+					if(event.offsetX > 1)
+					{
+						currentProvider++;
+					}
+					else if(event.offsetX < 0)
+					{
+						currentProvider--;
+					}
+					if(currentProvider <=-1)
+					{
+						currentProvider = mapProviders.length-1;
+					}
+					modestmaps.provider = mapProviders[currentProvider] as String;
+				}
+			}
+			
+			protected function windowedapplication1_appCompleteHandler(event:FlexEvent):void
+			{
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				setupGestures();
+			}
+			
+			protected function setupGestures():void
+			{
+				Multitouch.inputMode = MultitouchInputMode.GESTURE;
+				addEventListener(TransformGestureEvent.GESTURE_ZOOM, zoomHandler);
+				addEventListener(TransformGestureEvent.GESTURE_PAN, panHandler);
+			}
+			
+			protected function zoomHandler( event : TransformGestureEvent ) : void
+			{
+				if ( getTimer()-lastUpdate > IDLE_THRESHOLD )
+				{
+					if ( event.scaleX > 1.03 && event.scaleY > 1.03 )
+					{
+						modestmaps.map.zoomIn();
+						lastUpdate = getTimer();
+					} 
+					else if ( event.scaleX < .97 && event.scaleY < .97 )
+					{
+						modestmaps.map.zoomOut();
+						lastUpdate = getTimer();
+					}
+				}
+			}	
+			
+			
+			protected function addedHandler(event:Event):void
+			{
+				if(stage)
+				{
+					//stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Style source="style/style.css"/>
+	
+	<panel:BasicPanel width="100%" height="100%"
+					  borderColor="#000000" 
+					  contentBackgroundColor="#000000"
+					  borderAlpha=".95"
+					  backgroundColor="#111111"
+					  headerHeight="55"
+					  layout="absolute"
+					  horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		
+		<flex:MapComponent id="modestmaps" 
+						   width="100%" height="100%"
+						   draggable="true"
+						   doubleClickEnabled="true"
+						   provider="MICROSOFT_AERIAL"     
+						   doubleClick="modestmaps_doubleClickHandler(event)"
+						   zoom="3"
+						   />
+	</panel:BasicPanel>
+	
+</s:Application>

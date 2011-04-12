@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		title="RawTouchView"
+		creationComplete="view1_showHandler(event)" xmlns:parts="xd.parts.*"
+		>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import spark.components.Image;
+			import spark.core.SpriteVisualElement;
+			
+			import xd.parts.MultiDraggable;
+			
+			[Bindable]
+			[Embed(source='SimTheBeerSlut.jpg')]
+			public var imageClass:Class;
+
+			protected function view1_showHandler(event:FlexEvent):void
+			{
+				Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			}
+			
+			
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<parts:MultiDraggable source="{imageClass}"/>
+</s:View>

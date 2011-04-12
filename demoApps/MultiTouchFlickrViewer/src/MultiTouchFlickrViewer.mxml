@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	backgroundAlpha="0"
+	layout="absolute" 
+	creationComplete="onCC()" 
+	xmlns:BasicPanel="components.BasicPanel.*" 
+	xmlns:settingsPanel="settingsPanel.*" xmlns:components="components.*">
+	
+	<mx:Style source="styles/style.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			
+			import events.BasicPanelEvent;
+			import flash.ui.Multitouch;
+			import flash.ui.MultitouchInputMode;
+			import services.FlickrGetter;
+			
+			protected var f:FlickrGetter;
+			
+			protected var sharedObject:SharedObject;
+			
+			
+			protected function onCC():void
+			{
+				Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+				sharedObject = SharedObject.getLocal("flickrData");
+				readSharedObject();
+				if (this.stage){
+					this.stage.nativeWindow.maximize();
+				}else
+				{
+					this.callLater(callSimConnectInit);
+				}
+				//callYouTubeGetter()
+				callFlickrGetter();
+				
+			}
+			
+			protected function callFlickrGetter():void
+			{
+				basicPanel.removeAllChildren();
+				f = new FlickrGetter(basicPanel);
+				f.maxNumberOfPics = getMaxPics();
+				f.picStartingSize = getStartingPicSize();
+				f.getPhotos(getPhotoID());
+			}
+			
+			
+			protected function getStartingPicSize():Number
+			{
+				return sp.picStartingSize
+			}
+			
+			protected function getMaxPics():Number
+			{
+				return sp.maxNumberOfPics
+			}
+			
+			/**
+			 * Returns the string from the Settings Panel
+			 * 
+			 * @return 			String
+			 */ 
+			protected function getPhotoID():String
+			{
+				return sp.flickrPhotoSetId
+			}
+			
+			protected function callSimConnectInit():void
+			{
+				this.stage.nativeWindow.maximize();
+			}
+			
+			protected function showSettingsPanelEventHandler(event:BasicPanelEvent):void
+			{
+				if(sp.y==-270){
+					sp.y = -10;
+				}else if(sp.y == -10){ 
+					saveSharedObject();
+					sp.y = -270;
+				}
+			}
+			
+			protected function refreshFlickrViewEventHandler(event:BasicPanelEvent):void
+			{
+				callFlickrGetter();
+			}
+			
+			protected function readSharedObject():void
+			{
+				if(sharedObject.data.flickrData){
+					sp.maxNumberOfPics = sharedObject.data.flickrData.maxNumberOfPics;
+					sp.picStartingSize = sharedObject.data.flickrData.picStartingSize;
+					sp.flickrPhotoSetId = sharedObject.data.flickrData.photoSetId;
+				}
+			}
+			
+			protected function saveSharedObject():void
+			{
+				var o:Object = new Object();
+				o.maxNumberOfPics = getMaxPics();
+				o.picStartingSize = getStartingPicSize();
+				o.photoSetId = getPhotoID();
+				sharedObject.data.flickrData = o;
+			}
+
+			
+		]]>
+	</mx:Script>
+	<BasicPanel:BasicPanel id="basicPanel" 
+		label="MultiTouchFlickrViewer"
+		borderColor="#000000" 
+		borderAlpha=".95"
+		backgroundColor="#333333"
+		headerHeight="55"
+		layout="absolute"
+		horizontalScrollPolicy="off" verticalScrollPolicy="off"
+		touchBegin="trace('touch on panel')"
+		refreshFlickrView="refreshFlickrViewEventHandler(event)"
+		showSettingsPanel="showSettingsPanelEventHandler(event)"
+		height="100%" width="100%" name="BasicPanel">
+		
+	</BasicPanel:BasicPanel>
+		
+		
+	<settingsPanel:SettingsPanel id="sp"
+		y="-270"  
+		cornerRadius="8"
+		paddingTop="10"
+		paddingLeft="10"
+		moveEffect="Move"
+		borderStyle="solid" 
+		filters="{[new GlowFilter(0x000000, .75, 16, 16, 2, 1, false)]}"
+		borderThickness="2" 
+		borderColor="#000000"
+		backgroundColor="#222222"
+		backgroundAlpha=".75"
+		height="250" width="400" 
+		horizontalCenter="0">
+	</settingsPanel:SettingsPanel>
+	
+</mx:Application>

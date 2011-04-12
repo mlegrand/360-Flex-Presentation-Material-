@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		title="CapabilitiesTrace"
+		backgroundColor="0x000000"
+		creationComplete="view1_creationCompleteHandler(event)"
+		>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import utils.MultitouchCapabilities;
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var tra:MultitouchCapabilities = new MultitouchCapabilities();
+				sve.addChild(tra);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:SpriteVisualElement id="sve" height="100%" width="100%"/> 
+</s:View>

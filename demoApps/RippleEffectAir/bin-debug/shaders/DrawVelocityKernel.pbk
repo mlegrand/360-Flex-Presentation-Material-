@@ -1,0 +1,22 @@
+<languageVersion : 1.0;>
+
+kernel DrawVelocityKernel
+<   namespace : "com.derschmale";
+    vendor : "DerSchmale.com";
+    version : 1;
+    description : "Draws the velocity brush to the velocity field";
+>
+{
+    input image4 bitmapData;
+    input image4 brush;
+    output pixel4 dst;
+
+    void evaluatePixel()
+    {
+        float4 bmpSmp = sampleNearest(src1, outCoord());
+        float4 brushSmp = sampleNearest(src2, outCoord());
+        brushSmp.rg -= float2(0.5, 0.5);
+        brushSmp.rg *= 2.0;
+        dst = bmpSmp+brushSmp;
+    }
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of EventTrace</title>
+	<nodes>
+		<node label="libs">
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node label="icons">
+					<node icon="imageIcon" label="add.png" url="source/assets/icons/add.png.html"/>
+					<node icon="imageIcon" label="close.png" url="source/assets/icons/close.png.html"/>
+					<node icon="imageIcon" label="redo.png" url="source/assets/icons/redo.png.html"/>
+					<node icon="imageIcon" label="remove.png" url="source/assets/icons/remove.png.html"/>
+					<node icon="imageIcon" label="settings.png" url="source/assets/icons/settings.png.html"/>
+				</node>
+			</node>
+			<node icon="packageIcon" label="events" expanded="true">
+				<node icon="actionScriptIcon" label="BasicPanelEvent.as" url="source/events/BasicPanelEvent.as.html"/>
+			</node>
+			<node icon="packageIcon" label="panel" expanded="true">
+				<node icon="actionScriptIcon" label="BasicPanel.as" url="source/panel/BasicPanel.as.html"/>
+			</node>
+			<node label="style">
+				<node icon="cssIcon" label="style.css" url="source/style/style.css.html"/>
+			</node>
+			<node label="EventTrace-app.xml" url="source/EventTrace-app.xml.txt"/>
+			<node icon="mxmlAppIcon" selected="true" label="EventTrace.mxml" url="source/EventTrace.mxml.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 154K)" url="EventTrace.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

@@ -1,0 +1,50 @@
+<languageVersion : 1.0;>
+
+kernel RelaxDivergence
+<   namespace : "com.derschmale";
+    vendor : "derschmale.com";
+    version : 1;
+    description : "Relaxes the divergence in the fluid simulation";
+>
+{
+    input image3 velocityPressureField;
+    output pixel3 dst;
+    
+    parameter float scale <
+                            minValue: 0.0;
+                            maxValue: 10.0;
+                            defaultValue: 0.1;
+                        >;
+                        
+    void evaluatePixel()
+    {
+        float2 coord = outCoord();
+        
+        float3 current = sampleNearest(velocityPressureField, coord);
+        float3 left = sampleNearest(velocityPressureField, coord+float2(-1.0, 0.0));
+        float3 right = sampleNearest(velocityPressureField, coord+float2(1.0, 0.0));
+        float3 topright = sampleNearest(velocityPressureField, coord+float2(1.0, -1.0));
+        float3 bottomleft = sampleNearest(velocityPressureField, coord+float2(-1.0, 1.0));
+        float3 top = sampleNearest(velocityPressureField, coord+float2(0.0, -1.0));
+        float3 bottom = sampleNearest(velocityPressureField, coord+float2(0.0, 1.0));
+        
+        float d;
+        
+        d = scale*(current.x-left.x+current.y-top.y);
+        dst.x = current.x-d;
+        dst.y = current.y-d;
+        dst.z = current.z-d;
+        
+        d = scale*(right.x-current.x+right.y-topright.y);
+        dst.x += d;
+        
+        d = scale*(bottom.x-bottomleft.x+bottom.y-current.y);
+        dst.y += d;
+        
+        if (dst.x > 1.0) dst.x = 1.0;
+        else if (dst.x < -1.0) dst.x = -1.0;
+        
+        if (dst.y > 1.0) dst.y = 1.0;
+        else if (dst.y < -1.0) dst.y = -1.0;
+    }
+}

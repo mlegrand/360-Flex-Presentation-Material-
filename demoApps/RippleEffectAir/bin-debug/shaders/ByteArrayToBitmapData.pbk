@@ -1,0 +1,18 @@
+<languageVersion : 1.0;>
+
+kernel ByteArrayToBitmapData
+<   namespace : "com.derschmale";
+    vendor : "DerSchmale.com";
+    version : 1;
+    description : "Draws contents of a ByteArray to a BitmapData object";
+>
+{
+    input image3 src;
+    output pixel4 dst;
+
+    void evaluatePixel()
+    {   
+        dst.rgb = sampleNearest(src,outCoord());
+        dst.a = 1.0;
+    }
+}

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+					   backgroundColor="#000000"
+					   applicationComplete="windowedapplication1_applicationCompleteHandler(event)" 
+					   xmlns:panel="panel.*">
+	
+	<mx:Style source="style/style.css"/>
+		<mx:Script>
+		<![CDATA[
+			
+			import flash.display.StageDisplayState;
+			import flash.events.MouseEvent;
+			import flash.ui.Multitouch;
+			import flash.ui.MultitouchInputMode;
+			
+			import mx.events.FlexEvent;
+			
+			protected var isGesture:Boolean = true;
+
+			protected function windowedapplication1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				addTransformListeners();
+				addTouchListeners();
+				Multitouch.inputMode = MultitouchInputMode.GESTURE;
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			}
+			
+			protected function addTransformListeners():void
+			{
+				this.addEventListener(TransformGestureEvent.GESTURE_PAN,
+					transformEventHandler);
+				this.addEventListener(TransformGestureEvent.GESTURE_ROTATE,
+					transformEventHandler);
+				this.addEventListener(TransformGestureEvent.GESTURE_SWIPE,
+					transformEventHandler);
+				this.addEventListener(TransformGestureEvent.GESTURE_ZOOM,
+					transformEventHandler);
+			}
+			
+			protected function addTouchListeners():void
+			{
+				this.addEventListener(TouchEvent.TOUCH_BEGIN, touchEventHandler, false, 0, true);
+				this.addEventListener(TouchEvent.TOUCH_END, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_MOVE, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_OUT, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_OVER, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_ROLL_OUT, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_ROLL_OVER, touchEventHandler);
+				this.addEventListener(TouchEvent.TOUCH_TAP, touchEventHandler);
+			}
+			
+			protected function touchEventHandler(event:TouchEvent) : void
+			{
+				eventLabel.text = event.toString() + "\n" + eventLabel.text;
+			}
+			
+			protected function transformEventHandler ( event :
+													   TransformGestureEvent ) :void
+			{
+				eventLabel.text = event.toString() + "\n" + eventLabel.text;
+			}
+			
+			
+
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(isGesture)
+				{
+					isGesture = false;
+					Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT
+				}
+				else
+				{
+					isGesture = true;
+					Multitouch.inputMode = MultitouchInputMode.GESTURE
+				}
+			}
+
+		]]>
+	</mx:Script>
+	<panel:BasicPanel width="100%" height="100%"
+					  borderColor="#000000" 
+					  contentBackgroundColor="#000000"
+					  backgroundAlpha="1"
+					  contentBackgroundAlpha="1"
+					  borderAlpha=".95"
+					  chromeColor="#000000"
+					  accentColor="#000000"
+					  backgroundColor="#111111"
+					  headerHeight="55"
+					  layout="absolute"
+					  horizontalScrollPolicy="off" 
+					  verticalScrollPolicy="off">
+		
+	
+		<mx:TextArea id="eventLabel" 
+					 borderAlpha="0"
+					 verticalScrollPolicy="off" horizontalScrollPolicy="off"
+					 height="100%" width="100%" 
+					 fontSize="24"
+					 color="#FFFFFF"
+					 selectable="false" editable="false" 
+					 contentBackgroundAlpha="0" />
+		<mx:Button click="button1_clickHandler(event)"
+				   label="Toggle Touch Type" y="25" height="25" right="50" color="#FFFFFF" />
+	</panel:BasicPanel>
+</mx:Application>
