@@ -1,0 +1,4 @@
+# Ignore dot files #
+############
+# Action script properties etc.
+.*
